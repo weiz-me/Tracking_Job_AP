@@ -1,0 +1,72 @@
+Part Time Entry Level Software Engineer
+Smart Capital Center
+&nbsp;
+New York, NY
+&nbsp;
+Remote
+Profile insights
+Find out how your skills align with the job description
+Skills
+
+Do you have experience in Slack?
+&nbsp;
+Job details
+Pay
+$50,000 - $60,000 a year
+Job type
+Part-time
+&nbsp;
+Benefits
+Pulled from the full job description
+Flexible schedule
+Work from home
+&nbsp;
+Full job description
+About Us
+Smart Capital Center (https://www.smartcapital.center) is transforming the commercial real estate (CRE) and fintech industries through advanced AI and proprietary data analytics. We provide investors with real-time valuations and access to cost-effective lending — with unmatched speed and efficiency. Our clients include industry leaders such as KeyBank, JLL, Aareal Capital Corporation, and Pacific Life Insurance.
+
+The Opportunity
+We're looking for a U.S.-based entry-level Software Engineer to support deployment and development tasks, particularly focused on AWS environments and U.S. server operations. This is a part-time, remote role ideal for students or early-career engineers looking to gain hands-on experience in a high-impact, fast-paced startup.
+
+Role Details:
+
+Commitment: ~10 hours per month (with potential for future growth)
+Location: Must be located in the United States
+Type: Ongoing part-time contract via Upwork
+Key Responsibilities:
+
+Assist with the deployment of infrastructure and services on AWS, specifically U.S.-based servers
+Perform routine maintenance and updates to backend systems
+Support the engineering team with small development tasks or troubleshooting
+Collaborate via Slack and GitHub on a lean, fast-moving team
+Required Qualifications:
+
+1–2 years of software engineering experience (internships or academic projects accepted)
+Basic familiarity with AWS (EC2, S3, Lambda, etc.)
+Comfortable with Git and working in a collaborative development environment
+Strong communication skills and ability to follow through on assigned tasks
+Must be authorized to work in the U.S. and located in the U.S.
+Nice to Have:
+
+Experience with Python or Node.js
+Exposure to infrastructure-as-code tools like Terraform or CloudFormation
+Familiarity with CI/CD pipelines
+Why Join Us:
+
+Work directly with the founding team of a fast-growing AI-driven startup
+Learn the ins and outs of AI deployment, fintech, and CRE technology
+Get hands-on AWS experience in a real-world environment
+Flexible schedule and remote work
+How to Apply: Please submit a brief cover letter or message outlining:
+
+Your location and availability
+Any relevant coursework or AWS-related experience
+Your motivation for applying
+Job Type: Part-time
+
+Pay: $50,000.00 - $60,000.00 per year
+
+Benefits:
+
+Work from home
+Work Location: Remote

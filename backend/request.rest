@@ -1,0 +1,88 @@
+GET http://localhost:5000/admin/users
+
+####
+POST http://localhost:5000/test
+
+####
+POST http://localhost:5000/admin/querys
+Content-Type: application/json
+
+[{ "querys":"select * from users;"}]
+####
+
+POST http://localhost:5000/admin/querys
+Content-Type: application/json
+
+[
+  {
+    "querys": "INSERT INTO users ( Email, Name, Password, Login_type, Created_at) VALUES ('weizhand4g45name@gmail.com', 'wei zhang', 'pss', 'email', NOW());"
+  }
+]
+
+####
+POST http://localhost:5000/register
+Content-Type: application/json
+
+
+[{
+  "email": "w@wdw.com",
+  "name": "Wei w",
+  "password": "test"
+}]
+
+
+###
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+  "email": "zz",
+  "password": "zzz"
+}
+####
+
+POST http://localhost:5000/admin/querys
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdEBnbW1haWwuY29tIiwiaWF0IjoxNzQ4MTg5MjA4fQ.axWU9AlNgoNnoC_Pl5-jeiWMmtRtLgNvBaR3GvTeZJc
+
+[
+  {
+    "querys": "SELECT Password FROM users WHERE Email = 'weizhang45name@gmail.com';"
+  }
+]
+
+####
+
+POST http://localhost:5000/test2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoidGVzdEBnbW1haWwuY29tIiwiaWF0IjoxNzQ4MTg5ODcyfQ.cQHJFn1hN9bRj4DHPko4BIBbnKrHsTw82TpWFGpCEbc
+
+[
+  {
+    "querys": "SELECT Password FROM users WHERE Email = 'weizhang45name@gmail.com';"
+  }
+]
+
+
+####
+
+DELETE  http://localhost:5000/logout
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpYXQiOjE3NDgyMjc5MDN9.PBSzZu6zhx28cGt8ry06ip96nyJ5o0wMIFgm9Aaxn1A
+
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpYXQiOjE3NDgyMjc5MDN9.PBSzZu6zhx28cGt8ry06ip96nyJ5o0wMIFgm9Aaxn1A"
+  }
+
+####
+
+POST  http://localhost:5000/user/info
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpYXQiOjE3NDgyNzMyNDh9.ZkI2RzdpXzRA7zZWATGtu0oBrIqkkFmCX8T55_avBPI
+  
+  {
+    "user_id": "3"
+  }
+
+
+
