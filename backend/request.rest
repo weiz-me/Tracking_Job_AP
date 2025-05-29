@@ -1,4 +1,4 @@
-GET http://localhost:5000/admin/users
+GET http://weizproject.ddns.net:5000/admin/users
 
 ####
 POST http://localhost:5000/test
@@ -93,7 +93,7 @@ Content-Type: application/json
 
 
 ####
-POST  http://localhost:5000/user/pdf
+POST  http://weizproject.ddns.net:5000/user/pdf
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpYXQiOjE3NDg0ODQxNDV9.HUqWs8wOdBkNrnh5Yz4DXw1YYm1x3pSJnAbzoAP5_XQ
   

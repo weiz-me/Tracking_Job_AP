@@ -1,5 +1,5 @@
 import { useState } from "react";
-const API_End = "http://localhost:5000"
+const API_End = "http://weizproject.ddns.net:5000"
 const EditableTable = ({ data }) => {
   const [rows, setRows] = useState(data);
   const [editIndex, setEditIndex] = useState(null);
