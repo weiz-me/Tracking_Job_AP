@@ -196,7 +196,7 @@ app.post('/user/jobs',authenticateToken, async (req, res) => {
 
   try {
     // const result = await pool.query(`select * from job_applications where User_id = ${req.body.user_id}`);
-    const result = await pool.query("SELECT id, Company_name,Job_title,Location,Application_date,Status, Notes,Job_posting_url FROM job_applications Where user_id = $1 ORDER BY id DESC",[req.body.user_id]);
+    const result = await pool.query("SELECT Id, Company_name,Job_title,Location,Application_date,Status, Notes, Salary, Job_posting_url, File_location FROM job_applications Where user_id = $1 ORDER BY id DESC",[req.body.user_id]);
 
     res.json(result.rows);
   } catch (err) {
@@ -267,7 +267,7 @@ app.post('/user/insert/content',authenticateToken, async (req, res) => {
 
     const result = await pool.query(cleaned);
     // const table_res = await pool.query("SELECT * FROM job_applications Where user_id = $1 ORDER BY id DESC",[user_id]);
-    const table_res = await pool.query("SELECT Company_name,Job_title,Location,Application_date,Status, Notes	Job_posting_url FROM job_applications Where user_id = $1 ORDER BY id DESC",[user_id]);
+    const table_res = await pool.query("SELECT Company_name,Job_title,Location,Application_date,Status, Notes, Salary, Job_posting_url, File_location FROM job_applications Where user_id = $1 ORDER BY id DESC",[user_id]);
     res.json(table_res.rows);
   } catch (err) {
     console.error(err.message);
@@ -276,7 +276,51 @@ app.post('/user/insert/content',authenticateToken, async (req, res) => {
 
 });
 
+/////////////////pdf/////////////////////////
 
+app.post('/user/pdf',authenticateToken,(req,res) => {
+  const file_path = req.body.file_path;
+  fs.readFile(file_path, (err, data) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send('Error reading PDF file');
+    }
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename="jobs.pdf"');
+    res.send(data);
+  });
+});
+
+app.post('/user/save',authenticateToken,async (req,res)=> {
+    const editData = req.body.editData;
+
+    // console.log("req: ",req)
+    console.log("editData: ",editData)
+    const setClauses = [];
+    const values = [];
+
+    let idx = 1;
+    for (const [key, value] of Object.entries(editData)) {
+      if(key !== "id"){
+        setClauses.push(`"${key}" = $${idx}`);
+        values.push(value);
+        idx++;
+      }
+    }
+
+    // Add id as last parameter
+    values.push(editData.id);
+    const tableName = "job_applications"
+    const query = `
+      UPDATE ${tableName}
+      SET ${setClauses.join(', ')}
+      WHERE id = $${idx}
+    `;
+
+    const result = await pool.query(query,values);
+    res.json(result.rows);
+
+})
 app.post('/test',async (req,res) =>{
   await initPool();
 
@@ -296,7 +340,6 @@ app.post('/test2',authenticateToken,async (req,res) =>{
 
 
 });
-
 
 
 // Start server

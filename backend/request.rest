@@ -84,5 +84,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpY
     "user_id": "3"
   }
 
+####
+POST http://localhost:5000/admin/querys
+Content-Type: application/json
+
+[{ "querys":"SELECT Id, Company_name,Job_title,Location,Application_date,Status, Notes, Salary, Job_posting_url, File_location FROM job_applications"}]
 
 
+
+####
+POST  http://localhost:5000/user/pdf
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoienoiLCJpYXQiOjE3NDg0ODQxNDV9.HUqWs8wOdBkNrnh5Yz4DXw1YYm1x3pSJnAbzoAP5_XQ
+  
+  {
+    "file_path": "user_28/job_60.pdf"
+  }

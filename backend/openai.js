@@ -18,7 +18,7 @@ Inputs:
 - User ID: ${user_id}
 
 Instructions:
-- Extract "company_name", "job_title", and "location" from the job description.
+- Extract "company_name", "job_title", "salary" and "location" from the Job Description.
 - Use "${web}" for "job_posting_url" and "Website".
 - Use "${pdf_path}" for "file_location".
 - Use "${date}" for "application_date".
