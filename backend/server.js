@@ -10,10 +10,7 @@ const fs = require('fs');
 // const puppeteer = require('puppeteer');
 // Middleware
 // app.use(cors());
-app.use(cors({
-  origin: 'http://weizproject.ddns.net:3000',  // your frontend origin
-  credentials: true, // if using cookies/auth
-}));
+app.use(cors());
 
 app.use(express.json());
 const jwt = require('jsonwebtoken')
