@@ -7,9 +7,14 @@ const fs = require('fs');
  * @param {string} localPath - File path to save the PDF.
  * @returns {Promise<string>} - Extracted job description text.
  */
+const browser = await puppeteer.launch({
+  executablePath: '/usr/bin/chromium-browser'
+})
+
 async function pdfs(website, localPath) {
   const browser = await puppeteer.launch({
     headless: true,
+    executablePath: '/usr/bin/chromium-browser',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
