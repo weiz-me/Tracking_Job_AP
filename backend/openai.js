@@ -31,7 +31,7 @@ Instructions:
 Output only the SQL INSERT statement. No other text.`;
 
     const res = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-4.1-mini",
         messages:[{role:"user",content:prompt }],
     })
 
