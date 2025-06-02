@@ -26,6 +26,7 @@ Instructions:
 - Set "status" to "Applied".
 - Summarize coding languages, key qualifications or requirements, into the "notes" field.
 - Use NOW() for "created_at" and "updated_at".
+- salary has type of numeric.
 
 Output only the SQL INSERT statement. No other text.`;
 
