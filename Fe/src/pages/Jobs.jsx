@@ -139,13 +139,12 @@ useEffect(() => {
     };
     console.log("sqlquery: ", sqlquery)
     fetch(`${API_End}/user/insert/web`, requestOptions)
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-          setJobData(data);
+          const jobs = JSON.parse(data)
+          setJobData(jobs);
           console.log("sqldata", jobData);
         });
-
-
   };
 
   
@@ -162,9 +161,10 @@ useEffect(() => {
     };
     console.log("sqlquery: ", sqlquery)
     fetch(`${API_End}/user/insert/content`, requestOptions)
-        .then(response => response.json())
+        .then(response => response.text())
         .then(data => {
-          setJobData(data);
+          const jobs = JSON.parse(data)
+          setJobData(jobs);
           console.log("sqldata", jobData);
         });
 
