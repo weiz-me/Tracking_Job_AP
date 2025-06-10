@@ -29,7 +29,7 @@ Instructions:
 - salary has type of numeric.
 - all field must be not null.
 
-Output only the SQL INSERT statement. No other text.`;
+Output only the SQL INSERT statement. No other text. add RETURNING id; in sql code`;
 
     const res = await openai.chat.completions.create({
         model: "gpt-4.1-mini",

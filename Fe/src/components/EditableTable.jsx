@@ -1,5 +1,6 @@
 import { useState } from "react";
-const API_End = "http://weizproject.ddns.net:5000"
+// const API_End = "http://weizproject.ddns.net:5000"
+const API_End = "http://localhost:5000"
 const EditableTable = ({ data }) => {
   const [rows, setRows] = useState(data);
   const [editIndex, setEditIndex] = useState(null);
@@ -49,16 +50,16 @@ const cols = [
   };
 
 
-const handlePdf = async (file_path) => {
+const handlePdf = async (id) => {
   const token = localStorage.getItem('track_job_token');
-
+  console.log("id: ",id);
   const requestOptions = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`,
     },
-    body: JSON.stringify({file_path }),
+    body: JSON.stringify({"id":id }),
   };
 
   try {
@@ -102,7 +103,7 @@ const handlePdf = async (file_path) => {
             {cols.map((col) => (
               <td key={col} className="p-2 border">
                 {col === "file_location" ? (
-                  <button onClick={() => handlePdf(row.file_location)}
+                  <button onClick={() => handlePdf(row.id)}
                     className="text-blue-500 underline" target="_blank" rel="noopener noreferrer">
                     PDF
                   </button>

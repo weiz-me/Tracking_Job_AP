@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const app = express();
-pool = require('./db');  // Import DB connection
 const {chat} = require("./openai");
 const {pdfs, pdfs_content} = require('./pdf');
 const { Pool } = require('pg');
@@ -15,12 +14,15 @@ app.use(cors());
 app.use(express.json());
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
+pool = require('./db');
 // Example route
 // app.get('/', (req, res) => {
 //   res.send('Hello from Express!');
 // });
 let refreshTokens = []
-
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 function initPool() {
   pool = new Pool({
   user: process.env.DB_USER,
@@ -220,20 +222,33 @@ app.post('/user/insert/web', authenticateToken,async (req, res) => {
 
     const counter = await pool.query("select count(*) from job_applications");
 
-    if (!fs.existsSync(`user_${user_id}`)) {
-      fs.mkdirSync(`user_${user_id}`);
-    }
+    // if (!fs.existsSync(`user_${user_id}`)) {
+    //   fs.mkdirSync(`user_${user_id}`);
+    // }
     const pdfPath = `./user_${user_id}/job_${+counter.rows[0].count+1}.pdf`;
     if (!date){
       date = "current date";
     }
-    
-    const insertSQL = await chat(user_id,web, pdfs(web,pdfPath), pdfPath, date);
+    // console.log(pdfs(web))
+
+    const [content,pdf_buffer] = await pdfs(web);
+    const insertSQL = await chat(user_id,web, content, pdfPath, date);
     // console.log("\nGenerated SQL:\n", insertSQL);
     let cleaned = insertSQL.replace(/^```sql\s*|```$/g, "");
     // console.log("\nGenerated SQL:\n", cleaned);
 
     const result = await pool.query(cleaned);
+
+    
+    await pool.query('UPDATE job_applications SET pdf = $1 WHERE id = $2 RETURNING id',
+        [pdf_buffer,result.rows[0].id]
+    ).then(res => {
+        console.log('Job_id ' + res.rows[0].id + ' inserted');
+    }).catch(err => {
+        console.error('Error inserting file:', err.stack);
+    });
+
+    await sleep(1000);
     const table_res = await pool.query("SELECT * FROM job_applications WHERE User_id = $1 ORDER BY id DESC",[user_id]);
     res.json(table_res.rows);
   } catch (err) {
@@ -258,16 +273,26 @@ app.post('/user/insert/content',authenticateToken, async (req, res) => {
       date = "current date";
     }
     
-    if (!fs.existsSync(`user_${user_id}`)) {
-      fs.mkdirSync(`user_${user_id}`);
-    }
+    // if (!fs.existsSync(`user_${user_id}`)) {
+    //   fs.mkdirSync(`user_${user_id}`);
+    // }
     
-    const insertSQL = await chat(user_id,web, pdfs_content(content,pdfPath), pdfPath, date);
+    const [content2,pdf_buffer] = await pdfs_content(content)
+    const insertSQL = await chat(user_id,web, content2, pdfPath, date);
     // console.log("\nGenerated SQL:\n", insertSQL);
     let cleaned = insertSQL.replace(/^```sql\s*|```$/g, "");
     console.log("\nGenerated SQL:\n", cleaned);
 
     const result = await pool.query(cleaned);
+    
+    pool.query('UPDATE job_applications SET pdf = $1 WHERE id = $2 RETURNING id',
+        [pdf_buffer,result.rows[0].id]
+    ).then(res => {
+        console.log('Job_id ' + res.rows[0].id + ' inserted');
+    }).catch(err => {
+        console.error('Error inserting file:', err.stack);
+    });
+
     // const table_res = await pool.query("SELECT * FROM job_applications Where user_id = $1 ORDER BY id DESC",[user_id]);
     const table_res = await pool.query("SELECT Company_name,Job_title,Location,Application_date,Status, Notes, Salary, Job_posting_url, File_location FROM job_applications Where user_id = $1 ORDER BY id DESC",[user_id]);
     res.json(table_res.rows);
@@ -280,17 +305,20 @@ app.post('/user/insert/content',authenticateToken, async (req, res) => {
 
 /////////////////pdf/////////////////////////
 
-app.post('/user/pdf',authenticateToken,(req,res) => {
-  const file_path = req.body.file_path;
-  fs.readFile(file_path, (err, data) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error reading PDF file');
-    }
+app.post('/user/pdf',authenticateToken,async (req,res) => {
+  const job_id = req.body.id;
+  await initPool();
+  console.log("job_id:", job_id)
+  data = await pool.query('select pdf from job_applications where id = $1',[job_id]);
+  // fs.readFile(file_path, (err, data) => {
+  //   if (err) {
+  //     console.error(err);
+  //     return res.status(500).send('Error reading PDF file');
+  //   }
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', 'attachment; filename="jobs.pdf"');
-    res.send(data);
-  });
+    res.send(data.rows[0].pdf);
+  // });
 });
 
 app.post('/user/save',authenticateToken,async (req,res)=> {

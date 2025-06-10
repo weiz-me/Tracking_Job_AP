@@ -7,7 +7,7 @@ const fs = require('fs');
  * @param {string} localPath - File path to save the PDF.
  * @returns {Promise<string>} - Extracted job description text.
  */
-async function pdfs(website) {
+async function pdfs(website, localPath) {
   const browser = await puppeteer.launch({
     headless: true,
     executablePath: '/usr/bin/chromium-browser',
@@ -38,16 +38,12 @@ async function pdfs(website) {
     }
   }
 
-  // // Save as PDF
-  // await page.pdf({
-  //   path: localPath,
-  //   format: 'A4',
-  //   printBackground: true,
-  // });
-  const pdfBuffer = await page.pdf({
-        format: 'A4',
-        printBackground: true,
-    })
+  // Save as PDF
+  await page.pdf({
+    path: localPath,
+    format: 'A4',
+    printBackground: true,
+  });
 
   // Extract job description only
   const fullText = await page.evaluate(() => {
@@ -56,10 +52,9 @@ async function pdfs(website) {
 
   await browser.close();
   // console.log(`PDF saved to ${localPath}`);
-  return [fullText,pdfBuffer];
+  return fullText;
 }
-
-async function pdfs_content(content) {
+async function pdfs_content(content,localPath) {
 
   const browser = await puppeteer.launch({
     headless: true,
@@ -71,17 +66,13 @@ async function pdfs_content(content) {
   const contents = `<pre>${content}</pre>`;
   await page.setContent(contents);
 
-  // await page.pdf({ path: localPath, format: 'A4' });
-  const pdfBuffer = await page.pdf({
-    format: 'A4',
-    printBackground: true,
-  });
-  
+  await page.pdf({ path: localPath, format: 'A4' });
+
   await browser.close();
 
   console.log('PDF created from HTML content.');
 
-  return [content,pdfBuffer];
+  return content;
 }
 module.exports = {pdfs,pdfs_content};
 // // Example usage

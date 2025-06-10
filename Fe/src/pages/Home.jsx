@@ -1,7 +1,8 @@
 import React,{useState, useEffect} from 'react';
 import styles from '../styles';
 import { useNavigate } from 'react-router-dom';
-const API_End = "http://weizproject.ddns.net:5000";
+// const API_End = "http://weizproject.ddns.net:5000"
+const API_End = "http://localhost:5000";
 
 function Home() {
   const [login,setlogin] = useState(false);
