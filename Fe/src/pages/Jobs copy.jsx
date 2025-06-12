@@ -4,7 +4,7 @@ import DataTable from '../components/Table';
 import EditableTable from '../components/EditableTable';
 
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000";
+const API_End = "";
 
 function Jobs() {
   const [userData, setUserData] = useState(null);
@@ -157,7 +157,7 @@ useEffect(() => {
     const jobs = JSON.parse(jobsText);
     setJobData(jobs);
       
-    console.log("data refrsh", jobData)
+    console.log("data refrsh", jobData);
 
   };
 
@@ -191,9 +191,6 @@ useEffect(() => {
       if (!jobsRes.ok) throw new Error('Job fetch failed');
       const jobs = JSON.parse(jobsText);
       setJobData(jobs);
-
-
-
 
   };
 

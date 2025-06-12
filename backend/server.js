@@ -1,6 +1,8 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+// const path = require('path');
+
 const app = express();
 const {chat} = require("./openai");
 const {pdfs, pdfs_content} = require('./pdf');
@@ -20,9 +22,6 @@ pool = require('./db');
 //   res.send('Hello from Express!');
 // });
 let refreshTokens = []
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
 function initPool() {
   pool = new Pool({
   user: process.env.DB_USER,
@@ -37,6 +36,9 @@ function initPool() {
 });
 
 }
+////Front End//
+// app.use(express.static(path.join(__dirname, '../Fe/build/index.html')));
+
 
 //////////////ADMIN///////////////////////
 app.get('/admin/users',authenticateToken,async (req, res) => {
@@ -195,6 +197,76 @@ app.post('/user/info',authenticateToken,async (req, res) => {
   }
 });
 
+app.post('/user/job/hide',authenticateToken,async (req, res) => {
+  await initPool();
+  try {
+    // console.log(req.body)
+    const result = await pool.query("UPDATE job_applications SET hide = True WHERE id = $1 RETURNING id",[req.body.job_id]);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+app.delete('/user/delete', authenticateToken, async (req, res) => {
+  await initPool();
+
+  const { user_id } = req.body;
+  if (!user_id || isNaN(parseInt(user_id))) {
+    return res.status(400).json({ error: 'Valid user_id is required' });
+  }
+
+  try {
+    const jobsdelete = await pool.query(
+      "DELETE FROM job_applications WHERE user_id = $1",
+      [user_id]
+    );
+
+    const result = await pool.query(
+      "DELETE FROM users WHERE id = $1",
+      [user_id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "User not found or already deleted" });
+    }
+
+    res.json({ message: "User deleted successfully", deleted: result.rowCount });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
+
+app.delete('/user/job/delete', authenticateToken, async (req, res) => {
+  await initPool();
+
+  const { job_id } = req.body;
+
+  if (!job_id || isNaN(parseInt(job_id))) {
+    return res.status(400).json({ error: 'Valid user_id is required' });
+  }
+
+  try {
+    const result = await pool.query(
+      "DELETE FROM job_applications WHERE id = $1",
+      [job_id]
+    );
+
+    if (result.rowCount === 0) {
+      return res.status(404).json({ message: "Job not found or already deleted" });
+    }
+
+    res.json({ message: "Job deleted successfully", deleted: result.rowCount });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 app.post('/user/jobs',authenticateToken, async (req, res) => {
   await initPool();
 
@@ -248,7 +320,6 @@ app.post('/user/insert/web', authenticateToken,async (req, res) => {
         console.error('Error inserting file:', err.stack);
     });
 
-    await sleep(1000);
     const table_res = await pool.query("SELECT * FROM job_applications WHERE User_id = $1 ORDER BY id DESC",[user_id]);
     res.json(table_res.rows);
   } catch (err) {
@@ -351,6 +422,7 @@ app.post('/user/save',authenticateToken,async (req,res)=> {
     res.json(result.rows);
 
 })
+
 app.post('/test',async (req,res) =>{
   await initPool();
 
@@ -370,7 +442,9 @@ app.post('/test2',authenticateToken,async (req,res) =>{
 
 
 });
-
+// app.get('/*', (req, res) => {
+//   res.sendFile(path.join(__dirname, 'Fe/build', 'index.html'));
+// });
 
 // Start server
 const PORT = process.env.PORT || 3000;

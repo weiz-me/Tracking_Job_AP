@@ -4,7 +4,7 @@ import DataTable from '../components/Table';
 import EditableTable from '../components/EditableTable';
 
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000";
+const API_End = "";
 
 function Jobs() {
   const [userData, setUserData] = useState(null);
@@ -15,6 +15,7 @@ function Jobs() {
 
   const [date,setdate] = useState(today);
   const [login,setlogin] = useState(false);
+  // const [refreshFlag, setRefreshFlag] = useState(false);
 
 useEffect(() => {
   async function validateAndFetch() {
@@ -88,6 +89,29 @@ useEffect(() => {
 }, []);
 
   // useEffect(() => {
+  //   const fetchJobData = async () => {
+  //     const token = localStorage.getItem('track_job_token');
+  //     const user_id = localStorage.getItem('track_job_user_id');
+
+  //     const jobsRes = await fetch(`${API_End}/user/jobs`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${token}`
+  //       },
+  //       body: JSON.stringify({ user_id })
+  //     });
+
+  //     const jobsText = await jobsRes.text();
+  //     if (!jobsRes.ok) throw new Error('Job fetch failed');
+  //     const jobs = JSON.parse(jobsText);
+  //     setJobData(jobs);
+  //   };
+
+  //   fetchJobData();
+  // }, [jobData]);
+
+  // useEffect(() => {
   //   async function fetchUsers() {
   //     try {
   //       const res = await fetch(`${API_End}/admin/users`);
@@ -140,8 +164,8 @@ useEffect(() => {
     };
     console.log("sqlquery: ", sqlquery)
     await fetch(`${API_End}/user/insert/web`, requestOptions);
-    
-    const jobsRes = await fetch(`${API_End}/user/jobs`, {
+
+    const jobsRes1 = await fetch(`${API_End}/user/jobs`, {
         method: 'POST', // or 'PUT', depending on your API
         headers: {
           'Content-Type': 'application/json',
@@ -152,12 +176,12 @@ useEffect(() => {
         })
       });
 
-    const jobsText = await jobsRes.text();
-    if (!jobsRes.ok) throw new Error('Job fetch failed');
-    const jobs = JSON.parse(jobsText);
-    setJobData(jobs);
-      
-    console.log("data refrsh", jobData)
+    const jobsText1 = await jobsRes1.text();
+    const jobs1 = JSON.parse(jobsText1);
+    console.log('jobs1:',jobs1);
+    setJobData(jobs1);
+    // setRefreshFlag(prev => !prev);
+
 
   };
 
@@ -191,6 +215,8 @@ useEffect(() => {
       if (!jobsRes.ok) throw new Error('Job fetch failed');
       const jobs = JSON.parse(jobsText);
       setJobData(jobs);
+
+      // setRefreshFlag(prev => !prev);
 
 
 

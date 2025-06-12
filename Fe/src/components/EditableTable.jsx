@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState,useEffect} from "react";
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000"
+// const API_End = "http://localhost:5000"
+const API_End = "";
 const EditableTable = ({ data }) => {
   const [rows, setRows] = useState(data);
   const [editIndex, setEditIndex] = useState(null);
@@ -49,6 +50,49 @@ const cols = [
     setEditIndex(null);
   };
 
+  const handleDelete = async (idx,id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this user?");
+    if (!confirmDelete) return;
+
+    console.log("Delete:", editData);
+
+    const updatedRows = [...rows];
+    updatedRows.splice(idx, 1);  // ⬅️ remove the row
+    const token = localStorage.getItem('track_job_token');
+
+    const requestOptions = {
+      method: 'Delete',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ "job_id": id }),
+    };
+    await fetch(`${API_End}/user/job/delete`, requestOptions);
+    setRows(updatedRows);
+  };
+  
+  const handleHide = async (idx,id) => {
+    console.log("Hide:", editData);
+    // Simulate API call
+
+    const updatedRows = [...rows];
+    updatedRows.splice(idx, 1);  // ⬅️ remove the row
+    const token = localStorage.getItem('track_job_token');
+
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ "job_id": id }),
+    };
+    await fetch(`${API_End}/user/job/hide`, requestOptions);
+
+    setRows(updatedRows);
+  };
+
 
 const handlePdf = async (id) => {
   const token = localStorage.getItem('track_job_token');
@@ -82,6 +126,11 @@ const handlePdf = async (id) => {
   }
   
 };
+
+useEffect(() => {
+  setRows(data); // when props.data changes, update internal state
+}, [data]);
+
 
   return (
     <table className="w-full table-auto border">
@@ -135,6 +184,13 @@ const handlePdf = async (id) => {
                   Modify
                 </button>
               )}
+                <button onClick={() => handleDelete(idx,row.id)} className="bg-red-500 text-white px-3 py-1 rounded">
+                  Delete
+                </button>
+                <button onClick={() => handleHide(idx,row.id)} className="bg-yellow-500 text-white px-3 py-1 rounded">
+                  Hide
+                </button>
+
             </td>
           </tr>
         ))}
