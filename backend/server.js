@@ -36,11 +36,11 @@ function initPool() {
 });
 
 }
-//Front End//
-    app.use(express.static(path.join(__dirname, '../Fe/build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, '../Fe/build', 'index.html'));
-    });
+// //Front End//
+//     app.use(express.static(path.join(__dirname, '../Fe/build')));
+//     app.get('*', (req, res) => {
+//         res.sendFile(path.join(__dirname, '../Fe/build', 'index.html'));
+//     });
 
 //////////////ADMIN///////////////////////
 app.get('/admin/users',authenticateToken,async (req, res) => {
