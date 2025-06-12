@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build: ./Fe
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Fe:/app
+    environment:
+      - NODE_ENV=development

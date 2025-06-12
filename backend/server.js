@@ -37,10 +37,7 @@ function initPool() {
 
 }
 // //Front End//
-//     app.use(express.static(path.join(__dirname, '../Fe/build')));
-//     app.get('*', (req, res) => {
-//         res.sendFile(path.join(__dirname, '../Fe/build', 'index.html'));
-//     });
+    // app.use(express.static(path.join(__dirname, 'Fe/build')));
 
 //////////////ADMIN///////////////////////
 app.get('/admin/users',authenticateToken,async (req, res) => {
@@ -59,7 +56,27 @@ app.get('/admin/jobs',authenticateToken,async (req, res) => {
     await initPool();
 
     try {
-      const result = await pool.query('select * from job_applications');
+    const result = await pool.query(`
+      SELECT 
+        id,
+        user_id,
+        company_name,
+        job_title,
+        location,
+        status,
+        notes,
+        salary,
+        hide,
+
+        website,
+
+        application_date,
+        created_at,
+        updated_at,
+        file_location,
+        job_posting_url
+      FROM job_applications
+    `);
       res.json(result.rows);
     } catch (err) {
       console.error(err.message);
@@ -444,7 +461,12 @@ app.post('/test2',authenticateToken,async (req,res) =>{
 
 
 });
-
+  // app.get('/*', (req, res, next) => {
+  //   if (req.originalUrl.startsWith('/api') || req.originalUrl.startsWith('/user') || req.originalUrl.startsWith('/admin')) {
+  //     return next(); // Let API routes handle it
+  //   }
+  //   res.sendFile(path.join(__dirname, 'Fe', 'build', 'index.html'));
+  // });
 // Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

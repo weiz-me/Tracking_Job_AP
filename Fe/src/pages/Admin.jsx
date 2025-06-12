@@ -3,7 +3,7 @@ import styles from '../styles';
 import DataTable from '../components/Table';
 
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "";
+const API_End = "http://localhost:5000"
 
 function Admin() {
   const [utoggle,setutoggle] = useState(false);
