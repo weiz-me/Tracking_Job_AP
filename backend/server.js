@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-// const path = require('path');
+const path = require('path');
 
 const app = express();
 const {chat} = require("./openai");
@@ -36,9 +36,11 @@ function initPool() {
 });
 
 }
-////Front End//
-// app.use(express.static(path.join(__dirname, '../Fe/build/index.html')));
-
+//Front End//
+    app.use(express.static(path.join(__dirname, '../Fe/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, '../Fe/build', 'index.html'));
+    });
 
 //////////////ADMIN///////////////////////
 app.get('/admin/users',authenticateToken,async (req, res) => {
@@ -442,9 +444,6 @@ app.post('/test2',authenticateToken,async (req,res) =>{
 
 
 });
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'Fe/build', 'index.html'));
-// });
 
 // Start server
 const PORT = process.env.PORT || 3000;
