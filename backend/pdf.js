@@ -1,5 +1,6 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
+require('dotenv').config();
 
 /**
  * Save LinkedIn job posting as PDF and return only the job description text.
@@ -10,7 +11,7 @@ const fs = require('fs');
 async function pdfs(website) {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: '/opt/render/.cache/puppeteer/chrome/linux-136.0.7103.49/chrome-linux64/chrome',
+    executablePath: process.env.Chrome,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   // const browser = await puppeteer.launch({
