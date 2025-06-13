@@ -38,6 +38,14 @@ function initPool() {
 }
 // //Front End//
     // app.use(express.static(path.join(__dirname, 'Fe/build')));
+app.get('/', async (req, res) => {
+  try {
+    res.send('Server is running!');
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 //////////////ADMIN///////////////////////
 app.get('/admin/users',authenticateToken,async (req, res) => {
