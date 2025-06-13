@@ -11,9 +11,7 @@ const fs = require('fs');
 // const puppeteer = require('puppeteer');
 // Middleware
 // app.use(cors());
-app.use(cors({
-  origin: "*"
-}));
+app.use(cors());
 app.use(express.json());
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
@@ -42,12 +40,7 @@ app.options('*', cors()); // Allow preflight for all routes
 // //Front End//
     // app.use(express.static(path.join(__dirname, 'Fe/build')));
 app.get('/', async (req, res) => {
-  try {
-    res.send('Server is running!');
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server Error');
-  }
+    res.send('<h1>🚀 Server is running!</h1>');
 });
 
 //////////////ADMIN///////////////////////
