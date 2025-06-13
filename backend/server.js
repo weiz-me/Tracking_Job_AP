@@ -13,7 +13,7 @@ const fs = require('fs');
 // app.use(cors());
 app.use(cors());
 app.use(express.json());
-app.options('*', cors()); // Allow preflight for all routes
+// app.options('*', cors()); // Allow preflight for all routes
 
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
