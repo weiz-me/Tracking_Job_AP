@@ -10,7 +10,7 @@ const fs = require('fs');
 async function pdfs(website) {
   const browser = await puppeteer.launch({
     headless: true,
-    executablePath: '/usr/bin/chromium-browser',
+    executablePath: '/usr/bin/chrome',
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   // const browser = await puppeteer.launch({
