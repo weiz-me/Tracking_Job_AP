@@ -37,6 +37,8 @@ function initPool() {
 });
 
 }
+app.options('*', cors()); // Allow preflight for all routes
+
 // //Front End//
     // app.use(express.static(path.join(__dirname, 'Fe/build')));
 app.get('/', async (req, res) => {
