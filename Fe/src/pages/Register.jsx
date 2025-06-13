@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styles from '../styles';
 import { useNavigate } from 'react-router-dom';
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000"
+const API_End = process.env.REACT_APP_API_URL
 console.log(API_End)
 
 function Register() {
@@ -35,7 +35,7 @@ function Register() {
       <div className="bg-gray-100 flex justify-center items-center h-screen w-full">
         <div className="background-white lg:p-36 md:p-52 sm:p-20 p-8 w-full lg:w-1/2">
           <h1 className="text-2xl font-semibold mb-4">Register</h1>
-            {/* Username Input */}
+            {API_End}
             <div className="mb-4">
               <label htmlFor="username" className="block text-gray-600">Name</label>
               <input

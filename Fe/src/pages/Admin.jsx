@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles';
 import DataTable from '../components/Table';
 
-// const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000"
+const API_End = process.env.REACT_APP_API_URL
+console.log("ENV API:", process.env.REACT_APP_API_URL); // <- this should log the URL
 
 function Admin() {
   const [utoggle,setutoggle] = useState(false);

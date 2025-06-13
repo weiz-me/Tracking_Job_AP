@@ -1,4 +1,5 @@
 backend/.env
 backend/node_modules
 Fe/node_modules
+Fe/.env
 .env

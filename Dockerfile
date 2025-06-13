@@ -1,35 +1,37 @@
-# Base image
-FROM node:18
+# ---------- Step 1: Build the React App ----------
+FROM node:20 AS frontend
 
-# Set working directory
 WORKDIR /app
 
-# Copy backend
-COPY backend ./backend
+# Install dependencies
+COPY Fe/package*.json ./Fe/
+RUN cd Fe && npm install
 
-# Copy frontend
+# Copy all frontend code
 COPY Fe ./Fe
 
-# Install backend dependencies
-WORKDIR /app/backend
-RUN npm install
+# Build React
+RUN cd Fe && npm run build
 
-# Install frontend dependencies
-WORKDIR /app/Fe
-RUN npm install
 
-# Set working directory back to root
+# ---------- Step 2: Set up Node.js backend ----------
+FROM node:20 AS backend
+
 WORKDIR /app
 
-# Copy startup script
-COPY start.sh .
+# Install backend dependencies
+COPY backend/package*.json ./backend/
+RUN cd backend && npm install
 
-# Make the script executable
-RUN chmod +x start.sh
+# Copy backend source
+COPY backend ./backend
 
-# Expose ports
-EXPOSE 3000
+# Copy React build into backend's public folder
+COPY --from=frontend /app/Fe/build ./backend/public
+
+# Set working directory to backend
+WORKDIR /app/backend
+
 EXPOSE 5000
 
-# Start both servers
-CMD ["./start.sh"]
+CMD ["node", "server.js"]
