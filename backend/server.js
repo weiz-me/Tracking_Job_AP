@@ -11,9 +11,8 @@ const fs = require('fs');
 // const puppeteer = require('puppeteer');
 // Middleware
 // app.use(cors());
-const allowedOrigins = ['https://tracking-job-ap-frontend.vercel.app'];
 app.use(cors({
-  origin: allowedOrigins,
+  origin: "*"
 }));
 app.use(express.json());
 const jwt = require('jsonwebtoken')
