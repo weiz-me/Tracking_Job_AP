@@ -11,7 +11,7 @@ require('dotenv').config();
 async function pdfs(website) {
   const browser = await puppeteer.launch({
     headless: true,
-    // executablePath: process.env.Chrome,
+    executablePath: process.env.Chrome,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
   // const browser = await puppeteer.launch({
