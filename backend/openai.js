@@ -19,6 +19,7 @@ Inputs:
 
 Instructions:
 - Extract "company_name", "job_title", "salary" and "location" from the Job Description.
+- remove ' pr " in company_name.
 - Use "${web}" for "job_posting_url" and "Website".
 - Use "${pdf_path}" for "file_location".
 - Use "${date}" for "application_date".
