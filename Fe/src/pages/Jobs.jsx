@@ -4,7 +4,7 @@ import DataTable from '../components/Table';
 import EditableTable from '../components/EditableTable';
 
 // const API_End = "http://weizproject.ddns.net:5000"
-const API_End = "http://localhost:5000";
+const API_End = process.env.REACT_APP_API_URL;
 
 function Jobs() {
   const [userData, setUserData] = useState(null);
